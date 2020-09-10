@@ -103,7 +103,6 @@ export default {
     getListUser() {
       this.$axios.get('api/users')
           .then(({data}) => {
-            console.log(data)
             this.listUser = data;
           })
           .catch((error) => {
