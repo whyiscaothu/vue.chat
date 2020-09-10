@@ -21,11 +21,12 @@
 
     <v-navigation-drawer
         v-model="drawer"
+        width="350"
         app
     >
-      <v-list dense>
-
-      </v-list>
+      <comp-list-user
+        :listUser="listUser"
+      />
     </v-navigation-drawer>
 
 
@@ -59,6 +60,7 @@
 <script>
 
 import CompChatTemplate from "@/components/CompChatTemplate";
+import CompListUser from "@/components/CompListUser";
 
 
 export default {
@@ -71,7 +73,8 @@ export default {
 
 
   components: {
-    CompChatTemplate
+    CompChatTemplate,
+    CompListUser
   },
 
 
@@ -79,6 +82,7 @@ export default {
     drawer: null,
     drawerRight: null,
     left: false,
+    listUser: null
   }),
 
   methods: {
@@ -94,8 +98,23 @@ export default {
           console.log(error)
         });
       this.inputMessage = null;
+    },
+
+    getListUser() {
+      this.$axios.get('api/users')
+          .then(({data}) => {
+            console.log(data)
+            this.listUser = data;
+          })
+          .catch((error) => {
+            //
+          });
     }
 
+  },
+
+  created() {
+    this.getListUser();
   }
 }
 </script>
