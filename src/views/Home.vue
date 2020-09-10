@@ -87,19 +87,6 @@ export default {
 
   methods: {
 
-    async sendMessage() {
-      await this.$axios.post('api/messages', {
-        message: this.inputMessage,
-      })
-        .then((response) => {
-            console.log(response)
-          })
-        .catch((error) => {
-          console.log(error)
-        });
-      this.inputMessage = null;
-    },
-
     getListUser() {
       this.$axios.get('api/users')
           .then(({data}) => {
