@@ -43,11 +43,11 @@ export default {
 
     async sendMessage() {
 
-      this.messages.push({
-        user_id: this.authenticatedUser,
-        to_user_id: 5,
-        message: this.inputMessage,
-      })
+      // this.messages.push({
+      //   user_id: this.authenticatedUser,
+      //   to_user_id: 5,
+      //   message: this.inputMessage,
+      // })
 
       await this.$axios.post('api/messages', {
         message: this.inputMessage,
@@ -81,8 +81,8 @@ export default {
     // });
 
     this.$echo.channel('chat')
-        .listen('ChatEvent', (data) => {
-          console.log('pusher',data);
+        .listen('ChatEvent', ({message}) => {
+          this.messages.push(message);
         });
   }
 
