@@ -12,7 +12,7 @@
 
         <v-list-item
             :key="user.title"
-            @click=""
+            @click="setUserIdReceiveMessage(user.id)"
         >
 <!--          <v-list-item-avatar>-->
 <!--            <v-img :src="user.avatar"></v-img>-->
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex';
 export default {
   name: 'CompListUser',
 
@@ -73,6 +74,41 @@ export default {
       },
     ],
   }),
+
+
+  computed: {
+
+    ...mapGetters([
+        'userIdReceiveMessage'
+    ])
+
+  },
+
+
+  methods: {
+
+
+    async setUserIdReceiveMessage(userIdReceiveMessage) {
+      await this.$store.commit('setUserIdReceiveMessage', {
+        userIdReceiveMessage,
+      });
+      this.getMessageListFromServer();
+    },
+
+    getMessageListFromServer() {
+      this.$axios.get('api/messages', {
+        toUserId: this.userIdReceiveMessage
+      })
+          .then(({data}) => {
+            this.$store.commit('setMessagesFromAPIServer', {data})
+          })
+          .catch((error) => {
+            //
+          });
+    }
+
+
+  }
 }
 </script>
 

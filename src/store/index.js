@@ -5,14 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    objMessageFromPusher: null,
+    messagesFromAPIServer: null,
+    userIdReceiveMessage: null,
   },
   getters: {
+    userIdReceiveMessage: state => state.userIdReceiveMessage,
+    messagesFromAPIServer: state => state.messagesFromAPIServer,
   },
   mutations: {
-    recieveMessageFromPusher(state, {objMessage}) {
-      state.objMessageFromPusher = objMessage
+
+    setUserIdReceiveMessage(state, {userIdReceiveMessage}) {
+      state.userIdReceiveMessage = userIdReceiveMessage;
+    },
+
+    setMessagesFromAPIServer(state, {data}) {
+      state.messagesFromAPIServer = data;
     }
+
   },
   actions: {
   },

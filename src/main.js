@@ -22,8 +22,14 @@ let echo = new Echo({
   broadcaster: 'pusher',
   key: APP_KEY,
   cluster: APP_CLUSTER,
-  // forceTLS: true,
-  // client: pusher
+  forceTLS: true,
+  authEndpoint: 'http://larachat.local/broadcasting/auth',
+  encrypted: true,
+  auth: {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    },
+  },
 });
 
 Vue.prototype.$echo = echo;

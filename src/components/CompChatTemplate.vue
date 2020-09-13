@@ -1,6 +1,7 @@
 <template>
   <div class="col-12 align-self-end pa-0">
-    <div class="col-12 d-flex" :class="{'justify-end': message.user_id === authenticatedUser}" v-for="(message, index) in messages">
+
+    <div class="col-12 d-flex" :class="{'justify-end': message.user_id === authenticatedUserId}" v-for="(message, index) in messagesFromAPIServer">
       <div class="info pa-2 rounded">{{ message.message }}</div>
     </div>
     <div class="col-12 d-flex align-center justify-space-between">
@@ -27,30 +28,36 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: "CompChatTemplate",
 
 
   data: () => ({
-    messages: null,
     inputMessage: null,
-    authenticatedUser: +localStorage.getItem('userId') || null,
-    // pusherChannel: window.pusher.subscribe('chat'),
+    authenticatedUserId: +localStorage.getItem('userId') || null,
   }),
 
+  computed: {
+    ...mapGetters([
+        'userIdReceiveMessage',
+        'messagesFromAPIServer',
+    ])
+  },
 
   methods: {
 
     async sendMessage() {
 
-      // this.messages.push({
-      //   user_id: this.authenticatedUser,
-      //   to_user_id: 5,
-      //   message: this.inputMessage,
-      // })
+      this.messagesFromAPIServer.push({
+        user_id: this.authenticatedUserId,
+        to_user_id: this.userIdReceiveMessage,
+        message: this.inputMessage,
+      })
 
       await this.$axios.post('api/messages', {
         message: this.inputMessage,
+        toUserId: this.userIdReceiveMessage
       })
           .then((response) => {
             //
@@ -65,22 +72,13 @@ export default {
 
 
   created() {
-    this.$axios.get('api/messages')
-      .then(({data}) => {
-        this.messages = data;
-      })
-      .catch((error) => {
-        //
-      });
+    //
   },
 
 
   mounted() {
-    // this.pusherChannel.bind('App\\Events\\ChatEvent', function(data) {
-    //   console.log('pusher',data);
-    // });
 
-    this.$echo.channel('chat')
+    this.$echo.private(`chat.${this.authenticatedUserId}`)
         .listen('ChatEvent', ({message}) => {
           this.messages.push(message);
         });
