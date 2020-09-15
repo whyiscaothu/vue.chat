@@ -12,6 +12,7 @@
 
         <v-list-item
             :key="user.title"
+            v-if="user.id !== userId"
             @click="setUserIdReceiveMessage(user.id)"
         >
 <!--          <v-list-item-avatar>-->
@@ -42,6 +43,7 @@ export default {
 
 
   data: () => ({
+    userId: +localStorage.getItem('userId'),
     items: [
       {
         avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
