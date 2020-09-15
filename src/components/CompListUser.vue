@@ -94,11 +94,11 @@ export default {
       await this.$store.commit('setUserIdReceiveMessage', {
         userIdReceiveMessage,
       });
-      this.getMessageListFromServer();
+      await this.getMessageListFromServer(userIdReceiveMessage);
     },
 
-    getMessageListFromServer() {
-      this.$axios.get('api/messages', {headers: {'toUserId': this.userIdReceiveMessage}})
+    getMessageListFromServer(userIdReceiveMessage) {
+      this.$axios.get('api/messages', {headers: {'toUserId': userIdReceiveMessage}})
           .then(({data}) => {
             this.$store.commit('setMessagesFromAPIServer', {data})
           })
