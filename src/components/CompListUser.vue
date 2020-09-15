@@ -94,7 +94,7 @@ export default {
       await this.$store.commit('setUserIdReceiveMessage', {
         userIdReceiveMessage,
       });
-      await this.getMessageListFromServer();
+      this.getMessageListFromServer();
     },
 
     getMessageListFromServer() {
@@ -103,7 +103,7 @@ export default {
             this.$store.commit('setMessagesFromAPIServer', {data})
           })
           .catch((error) => {
-            //
+            console.log(error)
           });
     }
 

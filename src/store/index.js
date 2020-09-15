@@ -5,8 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    messagesFromAPIServer: null,
+    messagesFromAPIServer: [],
     userIdReceiveMessage: null,
+    messageFromPusher: null
   },
   getters: {
     userIdReceiveMessage: state => state.userIdReceiveMessage,
@@ -20,7 +21,11 @@ export default new Vuex.Store({
 
     setMessagesFromAPIServer(state, {data}) {
       state.messagesFromAPIServer = data;
-    }
+    },
+
+    pushMessageToMessagesFromAPIServer(state, {message}) {
+      state.messagesFromAPIServer.push(message);
+    },
 
   },
   actions: {

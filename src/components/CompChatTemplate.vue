@@ -80,7 +80,9 @@ export default {
 
     this.$echo.private(`chat.${this.authenticatedUserId}`)
         .listen('ChatEvent', ({message}) => {
-          this.messages.push(message);
+          this.$store.commit('pushMessageToMessagesFromAPIServer', {
+            message
+          });
         });
   }
 
