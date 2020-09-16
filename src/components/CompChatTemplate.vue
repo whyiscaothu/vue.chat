@@ -1,8 +1,17 @@
 <template>
-  <div class="col-12 align-self-end pa-0">
+  <div class="col-12 align-self-end pa-0" v-show="userIdReceiveMessage">
 
-    <div class="col-12 d-flex" :class="{'justify-end': message.user_id === authenticatedUserId}" v-for="(message, index) in messagesFromAPIServer">
-      <div class="info pa-2 rounded" style="width: 80%">{{ message.message }}</div>
+    <div
+        class="col-12 d-flex"
+        :class="{'justify-end': isOwner(message)}"
+        v-for="(message, index) in messagesFromAPIServer"
+    >
+      <div
+          class="pa-2 rounded text-justify" style="width: 80%"
+          :class="{info: isOwner(message), 'grey lighten-2': isNotOwner(message)}"
+      >
+        {{ message.message }}
+      </div>
     </div>
     <div class="col-12 d-flex align-center justify-space-between">
       <v-textarea
@@ -55,7 +64,7 @@ export default {
         message: this.inputMessage,
       })
 
-      await this.$axios.post('api/messages', {
+      this.$axios.post('api/messages', {
         message: this.inputMessage,
         toUserId: this.userIdReceiveMessage
       })
@@ -66,6 +75,13 @@ export default {
             //
           });
       this.inputMessage = null;
+    },
+
+    isOwner(message) {
+      return message.user_id === this.authenticatedUserId;
+    },
+    isNotOwner(message) {
+      return message.user_id !== this.authenticatedUserId;
     }
 
   },
