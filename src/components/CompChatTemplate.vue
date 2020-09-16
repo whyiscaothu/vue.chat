@@ -2,7 +2,7 @@
   <div class="col-12 align-self-end pa-0">
 
     <div class="col-12 d-flex" :class="{'justify-end': message.user_id === authenticatedUserId}" v-for="(message, index) in messagesFromAPIServer">
-      <div class="info pa-2 rounded">{{ message.message }}</div>
+      <div class="info pa-2 rounded" style="width: 80%">{{ message.message }}</div>
     </div>
     <div class="col-12 d-flex align-center justify-space-between">
       <v-textarea
