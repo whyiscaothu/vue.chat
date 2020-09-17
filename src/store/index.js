@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    listUser: null,
+    currentUserId: localStorage.getItem('userId'),
     messagesFromAPIServer: [],
     userIdReceiveMessage: null,
     messageFromPusher: null
@@ -12,6 +14,8 @@ export default new Vuex.Store({
   getters: {
     userIdReceiveMessage: state => state.userIdReceiveMessage,
     messagesFromAPIServer: state => state.messagesFromAPIServer,
+    currentUserId: state => state.currentUserId,
+    listUser: state => state.listUser,
   },
   mutations: {
 
@@ -26,6 +30,10 @@ export default new Vuex.Store({
     pushMessageToMessagesFromAPIServer(state, {message}) {
       state.messagesFromAPIServer.push(message);
     },
+
+    setListUser(state, {userList}) {
+      state.listUser = userList;
+    }
 
   },
   actions: {

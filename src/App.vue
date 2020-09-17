@@ -19,13 +19,7 @@ export default {
 
 
   beforeCreate() {
-    this.$axios.get('api/user')
-        .then(({data}) => {
-          localStorage.setItem('userId', data.id);
-        })
-        .catch(error => {
-          //
-        });
+    //
   }
 };
 </script>

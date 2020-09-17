@@ -12,7 +12,6 @@
 
         <v-list-item
             :key="user.title"
-            v-if="user.id !== userId"
             @click="setUserIdReceiveMessage(user.id)"
         >
 <!--          <v-list-item-avatar>-->
@@ -36,9 +35,7 @@ export default {
 
 
   props: {
-    listUser: {
-      type: Array,
-    }
+    //
   },
 
 
@@ -81,7 +78,8 @@ export default {
   computed: {
 
     ...mapGetters([
-        'userIdReceiveMessage'
+        'userIdReceiveMessage',
+        'listUser'
     ])
 
   },
@@ -103,7 +101,7 @@ export default {
             this.$store.commit('setMessagesFromAPIServer', {data})
           })
           .catch((error) => {
-            console.log(error)
+            //
           });
     }
 

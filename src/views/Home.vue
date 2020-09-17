@@ -24,9 +24,7 @@
         width="350"
         app
     >
-      <comp-list-user
-        :listUser="listUser"
-      />
+      <comp-list-user/>
     </v-navigation-drawer>
 
 
@@ -62,6 +60,8 @@
 import CompChatTemplate from "@/components/CompChatTemplate";
 import CompListUser from "@/components/CompListUser";
 
+import {mapGetters} from 'vuex';
+
 
 export default {
   name: 'Home',
@@ -85,22 +85,51 @@ export default {
     listUser: null
   }),
 
+
+  computed: {
+    ...mapGetters([
+        'currentUserId'
+    ])
+  },
+
+
   methods: {
 
-    getListUser() {
+    getListUser(userId) {
       this.$axios.get('api/users')
           .then(({data}) => {
-            this.listUser = data;
+
+            let userList = this.excludeCurrentUserInListUser(data, userId);
+            this.$store.commit('setListUser', {
+              userList
+            });
+
           })
           .catch((error) => {
             //
           });
+    },
+
+    excludeCurrentUserInListUser(userList, userId) {
+      if (userList.length && typeof userList === 'object') {
+        return userList.filter(user => user.id !== userId)
+      }
     }
 
   },
 
-  created() {
-    this.getListUser();
+  async created() {
+    let userId = null;
+    await this.$axios.get('api/user')
+        .then(({data}) => {
+          userId = data.id;
+          localStorage.setItem('userId', userId);
+        })
+        .catch(error => {
+          //
+        });
+    this.getListUser(userId);
+
   }
 }
 </script>
