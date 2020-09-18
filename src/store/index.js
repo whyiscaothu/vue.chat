@@ -9,7 +9,7 @@ export default new Vuex.Store({
     currentUserId: localStorage.getItem('userId'),
     messagesFromAPIServer: [],
     userIdReceiveMessage: null,
-    messageFromPusher: null
+    messageFromPusher: null,
   },
   getters: {
     userIdReceiveMessage: state => state.userIdReceiveMessage,
@@ -33,10 +33,33 @@ export default new Vuex.Store({
 
     setListUser(state, {userList}) {
       state.listUser = userList;
+    },
+
+    setFirstUserInListUser(state, {firstUserInListUser}) {
+      state.userIdReceiveMessage = firstUserInListUser.id;
     }
 
   },
   actions: {
+
+
+    setListUser({state, commit}, {userList}) {
+      let firstUserInListUser = userList[0];
+      commit('setListUser', {userList});
+      commit('setFirstUserInListUser', {firstUserInListUser});
+    },
+
+    axiosApiMessage({state, commit}, {userIdReceiveMessage}) {
+      axios.get('api/messages', {headers: {'toUserId': userIdReceiveMessage}})
+          .then(({data}) => {
+            commit('setMessagesFromAPIServer', {data})
+          })
+          .catch((error) => {
+            //
+          });
+    }
+
+
   },
   modules: {
   }

@@ -100,7 +100,7 @@ export default {
           .then(({data}) => {
 
             let userList = this.excludeCurrentUserInListUser(data, userId);
-            this.$store.commit('setListUser', {
+            this.$store.dispatch('setListUser', {
               userList
             });
 

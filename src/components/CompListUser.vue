@@ -96,13 +96,7 @@ export default {
     },
 
     getMessageListFromServer(userIdReceiveMessage) {
-      this.$axios.get('api/messages', {headers: {'toUserId': userIdReceiveMessage}})
-          .then(({data}) => {
-            this.$store.commit('setMessagesFromAPIServer', {data})
-          })
-          .catch((error) => {
-            //
-          });
+      this.$store.dispatch('axiosApiMessage', {userIdReceiveMessage});
     }
 
 
